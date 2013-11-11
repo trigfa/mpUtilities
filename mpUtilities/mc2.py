@@ -217,6 +217,9 @@ def datasetinfo(file):
 				Direction.append("AB(X)")
 			if (line.split("=")[1]) == "INPLANE_PROFILE":
 				Direction.append("GT(Y)")
+			if (line.split("=")[1]) == "PDD":
+				Direction.append("PDD")
+    
 
 		if ("END_SCAN" in line) and ("DATA" not in line):
 			EndScan.append(lineNumber)	
