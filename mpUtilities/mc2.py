@@ -127,6 +127,11 @@ def read_mc2(file, datastartline, dataendline):
 				dataline = dataline + 1
 				
 			if "END_DATA" in line:   #we have now reached the end of aour data and can create our class
+				try:
+					scan_depth
+				except NameError:
+					scan_depth="0"
+					
 				mc2_dataset = mc2(measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata)	
 				
 		lineNumber = lineNumber + 1
@@ -168,57 +173,63 @@ def extractdata(line):
 		print line
 
 
-def datasetinfo(file):    
-    """Finds datasets within a file and returns some useful info so you can decide which one you need
+def datasetinfo(file):
+	
+	"""Finds datasets within a file and returns some useful info so you can decide
+	which one you need
 	Returns the start and end lines, acquisition date, energy,field size, direction and depth
 	Call as 'DataStart, DataEnd, MeasDate, Energy, FieldSize, Depth=datasetinfo(inputfile)' """
-    datasets = 0
-    ifile = open(file, 'r') 
-    lines = ifile.readlines()
-    datasets = 0
-    lineNumber = 0	
-    BeginScan=[]; EndScan=[]; MeasDate = []; Energy = []; FieldSize=[]; Depth=[]; Direction=[]
-    for line in lines:
-        line = line.replace('\t', ',')      # replaces all the tabs with commas
-        line = line.rstrip('\r\n')            # strips any control characters from the end of the line
-        if ("BEGIN_SCAN" in line) and ("DATA" not in line):
-            BeginScan.append(lineNumber)
-            datasets = datasets+1
-        if "MEAS_DATE" in line:
-            MeasDate.append(line.split("=")[1])
-            
-        if "ENERGY" in line:
+	
+	datasets = 0
+	ifile = open(file, 'r') 
+	lines = ifile.readlines()
+	datasets = 0
+	lineNumber = 0	
+	BeginScan=[]; EndScan=[]; MeasDate = []; Energy = []; FieldSize=[]; Depth=[]; Direction=[]
+	for line in lines:
+		
+		line = line.replace('\t', ',')      # replaces all the tabs with commas
+		line = line.rstrip('\r\n')            # strips any control characters from the end of the line
+		
+		if ("BEGIN_SCAN" in line) and ("DATA" not in line):
+			BeginScan.append(lineNumber)
+			datasets = datasets+1
+			
+		if "MEAS_DATE" in line:
+			MeasDate.append(line.split("=")[1])
+			
+		if "ENERGY" in line:
 			Energy.append(int((line.split("=")[1]).split('.')[0]))
 			# This rather convoluted line extracts the integer from a string 
 			# e.g the string "6.00" is converted to the integer "6"
 			#  Energy=(int(line.split('.')[0]))
 
-        if "SCAN_DEPTH=" in line:
+		if "SCAN_DEPTH=" in line:
 			Depth.append(int((line.split("=")[1]).split('.')[0]))
-        if ("FIELD_INPLANE" in line) and ("REF" not in line):
+			
+		if ("FIELD_INPLANE" in line) and ("REF" not in line):
 			FieldSize.append((int((line.split("=")[1]).split('.')[0]))/10) # convert from mm to cm
-				
+		3		
 		#
 		# This probably shouldn't be relied upon as the direction
 		# in the old data appears to be quite unreliable.
 		# The filename appears to be a more reliable guide to the scan direction!
 		#
 		
-        if "SCAN_CURVETYPE=" in line:
-            answer = (line.split("=")[1])
-            if (line.split("=")[1]) == "CROSSPLANE_PROFILE":
+		if "SCAN_CURVETYPE=" in line:			
+			answer = (line.split("=")[1])
+			if (line.split("=")[1]) == "CROSSPLANE_PROFILE":
 				Direction.append("AB(X)")
-            if (line.split("=")[1]) == "INPLANE_PROFILE":
+			if (line.split("=")[1]) == "INPLANE_PROFILE":
 				Direction.append("GT(Y)")
-            if (line.split("=")[1]) == "PDD":
-                       Direction.append("PDD")
-                       Depth.append("N/A")
-    
+			if (line.split("=")[1]) == "PDD":
+				Direction.append("PDD")
+				Depth.append("N/A")
 
-        if ("END_SCAN" in line) and ("DATA" not in line):
-			EndScan.append(lineNumber)
-
-        lineNumber = lineNumber + 1		
+		if ("END_SCAN" in line) and ("DATA" not in line):
+			EndScan.append(lineNumber)	
+			
+		lineNumber = lineNumber + 1		
 	return BeginScan, EndScan, MeasDate, Energy, FieldSize, Depth, Direction
 
 
