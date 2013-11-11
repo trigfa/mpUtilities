@@ -215,8 +215,9 @@ def datasetinfo(file):
                        Depth.append("N/A")
     
 
-            if ("END_SCAN" in line) and ("DATA" not in line):
-			EndScan.append(lineNumber)	
+        if ("END_SCAN" in line) and ("DATA" not in line):
+			EndScan.append(lineNumber)
+
         lineNumber = lineNumber + 1		
 	return BeginScan, EndScan, MeasDate, Energy, FieldSize, Depth, Direction
 
