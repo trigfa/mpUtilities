@@ -7,7 +7,7 @@ class mc2:
 	
 	"""Defines an mc2 class with the required attributes"""
 	
-	def __init__(self, measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata):		
+	def __init__(self, measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata, comment):		
 		self.measdate = measdate
 		self.linac = linac
 		self.modality = modality
@@ -109,7 +109,8 @@ def read_mc2(file, datastartline, dataendline):
 				
 			if "MEAS_UNIT=" in line:
 				meas_unit = (line.split("=")[1])
-				
+			comment = "This is a comment"
+   
 			if line.startswith(',,,'):     # this must be our data
 				if dataline == 0:
 					xvalue, yvalue, refvalue = extractdata(line)
@@ -132,7 +133,7 @@ def read_mc2(file, datastartline, dataendline):
 				except NameError:
 					scan_depth="0"
 					
-				mc2_dataset = mc2(measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata)	
+				mc2_dataset = mc2(measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata, comment)	
 				
 		lineNumber = lineNumber + 1
 		
