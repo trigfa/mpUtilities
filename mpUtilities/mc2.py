@@ -9,6 +9,7 @@ class mc2:
     
     def __init__(self, measdate, linac, modality, inplane_axis, crossplane_axis, depth_axis, inplane_axis_dir, crossplane_axis_dir, depth_axis_dir, energy, ssd, field_inplane, field_crossplane, scan_curvetype, scan_depth, scan_offaxis_inplane, scan_offaxis_crossplane, meas_time, meas_unit, xdata, ydata, refdata, comment):         
         self.measdate = measdate
+        self.comment = comment
         self.linac = linac
         self.modality = modality
         self.inplane_axis = inplane_axis
