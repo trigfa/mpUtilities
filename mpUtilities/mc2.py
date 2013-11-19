@@ -111,8 +111,7 @@ def read_mc2(file, datastartline, dataendline):
                 
             if "MEAS_UNIT=" in line:
                 meas_unit = (line.split("=")[1])
-            comment = "This is a comment"
-
+           
             if line.startswith(',,,'):     # this must be our data
                 if dataline == 0:
                     xvalue, yvalue, refvalue = extractdata(line)
