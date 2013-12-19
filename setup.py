@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='mpUtilities',
-    version='0.1.0',
+    version='0.2.0',
     author='Graham Arden',
     author_email='graham@trigfa.org.uk',
     packages=['mpUtilities'],
