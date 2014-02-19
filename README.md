@@ -7,3 +7,4 @@ They include:
 - mc2 which is used for parsing data from our PTW ploting tank,
 - webline which is used for parsing the datafiles from the PTW webline daily check devices, 
 - graphUtils which contains a number of utilities for when drawing graphs
+- peakdetect is a library of peak detection routines (Note: These were forked from https://gist.github.com/sixtenbe/1178136)
