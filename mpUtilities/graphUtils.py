@@ -39,7 +39,7 @@ def find_nearest(array,value):
     idx=(np.abs(array-value)).argmin()
     return array[idx]
     
-def interpolate_data(xarray, yarray, minvalue, maxvalue):
-    interpx=np.linspace(minvalue,maxvalue, 201)
+def interpolate_data(xarray, yarray, minvalue, maxvalue, length=201):
+    interpx=np.linspace(minvalue,maxvalue, length)
     interpy=scipy.interpolate.interp1d(xarray, yarray)(interpx)
     return interpx, interpy
