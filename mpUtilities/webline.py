@@ -6,6 +6,7 @@ import csv
 from lxml import etree
 import dateutil.parser
 import pandas as pd
+import numpy as np
 
 class weblinedata:
 
