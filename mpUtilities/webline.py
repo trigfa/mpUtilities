@@ -44,7 +44,8 @@ class weblinedata:
 
 def parse_qcw(filename, Linac, Modality="Photons", Energy="6", Fieldsize="100x100"):
     """Read data from a qcw file and presents it as an instance of the weblinedata class
-    Use as dataset = parse_qcw(file)"""
+    Use as dataset = parse_qcw(file)
+    Note this should no longer be used, use "qcw_to_df()" instead to create a pandas dataframe """
 
     # open the data file
     xmlData = etree.parse(filename)
@@ -308,12 +309,19 @@ def qcw_to_df(filename):
               "MeasDataAnalyzeValuesWedgeValue":("MeasData/AnalyzeValues/Wedge/Value"),
               "MeasDataAnalyzeValuesWedgeValid":("MeasData/AnalyzeValues/Wedge/Valid")
              }
-    # open the and parse the datafile
+    # open and parse the datafile
     xmlData = etree.parse(filename)
     trendData = xmlData.findall("//TrendData")
 
     # sort the directory keys
     sortedKeys = list(sorted(Parameters.keys()))
+    # create a list of those parameters whose dtype should be float.
+    floatList=[]
+    for q in sortedKeys:
+        if q.startswith("AnalyzeParameters"):
+            floatList.append(q)
+        elif q.endswith("Value"):
+            floatList.append(q)
 
     # create a list of headers for our pandas dataframe
     dateList=[]
@@ -328,9 +336,11 @@ def qcw_to_df(filename):
         for i,j in enumerate(Parameters):
             result[j] = b.findtext(Parameters[j])
             df.loc[a]=(result)
-    df = df.set_index('date')
-    #for i in int64list:
-    #    df.attrib(i) = pd.to_numeric(df.attrib(i))
 
-    # df = df.convert_objects(convert_numeric=True)
+    # converts the dtype of the parameters listed in 'floatList' to float
+    for k in floatList:
+        df[k] = df[k].astype('float')
+
+    df = df.set_index('date')
+
     return df
