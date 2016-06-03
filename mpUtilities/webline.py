@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """ A python library for reading PTW mcc files
-      Graham Arden, July 2011 """
+      Graham Arden, updated June 2016 """
 
 import csv
 from lxml import etree

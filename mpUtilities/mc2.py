@@ -155,7 +155,7 @@ def open_mcc(dataDirectory):
 def extractdata(line):
 
     """For each line, return the x and y values, check whether there is reference value
-    and if so return the reference value, otherwise return a reference      value of 1 """
+    and if so return the reference value, otherwise return a reference value of 1 """
 
     newArray = (line.split(','))  #
     if len(newArray) == 8:
